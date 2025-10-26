@@ -63,3 +63,11 @@ Requirements Gathering (Product Manager)
 - /hello and /hello/123 will give same result, but not /hello123
 - URL bar always does a GET api call.
 - .use() will match all the HTTP methods unlike specific .get(), .post(), .put(),....
+
+- /ab?c will work for both /abc, /ac
+- /ab+c will work for both /abc, /abbbbc, /abbbc, but not /abcc, /abbccc
+- /ab*cd means we can have anything in place of *, like /abxutcd, /ab899cd
+
+- query parameter: added after a ? in the URL and can have multiple key–value pairs. GET /users?role=admin&active=true. Accessed via ( req.query )
+
+- path parameter: part of the URL path itself. GET /users/:id. Retrieved via ( req.params )
