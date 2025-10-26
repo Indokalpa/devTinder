@@ -56,3 +56,10 @@ Requirements Gathering (Product Manager)
 - unless breaking changes, it is always backward compatible.
 
 - package.lock.json defines the exact version information that is used.
+
+- once the upstream (tracking) is set, git push and git pull work seamlessly without extra arguments.
+
+- order of defining the routes matters, as it starts checking top-down.
+- /hello and /hello/123 will give same result, but not /hello123
+- URL bar always does a GET api call.
+- .use() will match all the HTTP methods unlike specific .get(), .post(), .put(),....
