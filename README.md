@@ -48,6 +48,7 @@ Requirements Gathering (Product Manager)
 
 - Express.js is a web framework built on top of Node.js’s core 'http' module.
 
+# package.json & package.lock.json
 - ^/caret : Major version is fixed. Minor updates and small patches will update authomatically.
 - ~/tilde : Minor version is fixed. Only bug fixes or small patches will update automatically
 - no symbol : Compatible with exact version only.
@@ -59,9 +60,11 @@ Requirements Gathering (Product Manager)
 
 - once the upstream (tracking) is set, git push and git pull work seamlessly without extra arguments.
 
+# Routing and Request Handlers
+
 - order of defining the routes matters, as it starts checking top-down.
 - /hello and /hello/123 will give same result, but not /hello123
-- URL bar always does a GET api call.
+- URL bar always sends a GET api call.
 - .use() will match all the HTTP methods unlike specific .get(), .post(), .put(),....
 
 - /ab?c will work for both /abc, /ac
@@ -71,3 +74,23 @@ Requirements Gathering (Product Manager)
 - query parameter: added after a ? in the URL and can have multiple key–value pairs. GET /users?role=admin&active=true. Accessed via ( req.query )
 
 - path parameter: part of the URL path itself. GET /users/:id. Retrieved via ( req.params )
+
+- There could be multiple route handlers for a route, defined in 2nd, 3rd, 4th,... argument. 
+- if we're not doing res.send(), it will wait till timeout happens, then exits. It will not go to next handler automatically. use next() to call the next handler. Only first one is called if no next() is called.
+
+- app.use("/user", (req, res, next) => {
+    // Route handler
+    res.send("route Handler 1");
+    next();
+}, 
+(req, res) => {
+    res.send("route Handler 2");
+}
+),
+ will give error as TCP connection is closed after response is sent.
+
+ - if next() is called at last route handler, then error as no handler to call(it don't exist).
+
+ - app.get("/user", rh1, rh2, [rh3, rh4], rh5);
+
+# Middleware & error handlers
