@@ -98,3 +98,11 @@ will give error as TCP connection is closed after response is sent. output : rou
 - Middleware : Used to process requests before they reach the final route handler. It can modify the request/response objects, perform checks, or run logic.
 
 - Handles a specific route (URL + method) and sends the final response to the client.
+
+# Error Handling
+
+- use try-catch block for error handling
+- try {.....} catch (err) {.......}
+
+- app.use("/", (err, req, res, next) => {.....}), keep is towards the end for handling any errors if found.
+
