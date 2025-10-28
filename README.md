@@ -76,21 +76,25 @@ Requirements Gathering (Product Manager)
 - path parameter: part of the URL path itself. GET /users/:id. Retrieved via ( req.params )
 
 - There could be multiple route handlers for a route, defined in 2nd, 3rd, 4th,... argument. 
-- if we're not doing res.send(), it will wait till timeout happens, then exits. It will not go to next handler automatically. use next() to call the next handler. Only first one is called if no next() is called.
+- if we're not doing res.send(), it will wait till timeout happens, then exits. It will not go to next handler automatically. 
+- use next() to call the next handler. ONLY FIRST ONE IS CALLED if no next() is called.
 
 - app.use("/user", (req, res, next) => {
     // Route handler
-    res.send("route Handler 1");
     next();
+    res.send("route Handler 1");
 }, 
 (req, res) => {
     res.send("route Handler 2");
 }
 ),
- will give error as TCP connection is closed after response is sent.
+will give error as TCP connection is closed after response is sent. output : route Handler 1   route Handler 2
 
  - if next() is called at last route handler, then error as no handler to call(it don't exist).
 
- - app.get("/user", rh1, rh2, [rh3, rh4], rh5);
+ - app.get("/user", rh1, rh2, [rh3, rh4], rh5) or multiple app.get()s
 
-# Middleware & error handlers
+# Middleware vs Route handlers
+- Middleware : Used to process requests before they reach the final route handler. It can modify the request/response objects, perform checks, or run logic.
+
+- Handles a specific route (URL + method) and sends the final response to the client.
