@@ -106,3 +106,7 @@ will give error as TCP connection is closed after response is sent. output : rou
 
 - app.use("/", (err, req, res, next) => {.....}), keep is towards the end for handling any errors if found.
 
+# Database, Schema & Model
+
+- First make the DB connection, then do app.listen()
+
