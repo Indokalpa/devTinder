@@ -9,6 +9,7 @@ const app = express();
 // will work for all routes
 app.use(express.json());
 
+// POST /signup - add a new user to the database
 app.post("/signup", async (req, res) => {
 
     const user = new UserModel(req.body);
@@ -20,7 +21,7 @@ app.post("/signup", async (req, res) => {
     }
 });
 
-// Get user by email
+// GET /user - get user info by email
 app.get("/user", async (req, res) => {
     const userEmail = req.body.emailId;
 
@@ -34,15 +35,39 @@ app.get("/user", async (req, res) => {
     }catch(err){
         res.status(400).send("error fetching the user" + err.message);
     }
-})
+});
 
-// Feed API - GET /feed - get all the users from the database
+// GET /feed - get all the users from the database
 app.get("/feed", async (req, res) => {
     try{
         const users = await UserModel.find({});
         res.send(users);
     }catch(err){
         res.status(400).send("error fetching the feed" + err.message);
+    }
+});
+
+// DELETE /user - delete a user from the database by userId
+app.delete("/user", async (req, res) => {
+    const userId = req.body.userId;
+
+    try{
+        const user = await UserModel.findByIdAndDelete(userId);
+        res.send("User deleted successfully");
+    }catch(err){
+        res.status(400).send("error deleting the user" + err.message);
+    }
+});
+
+// PATCH /user - update data of a user by userId
+app.patch("/user", async (req, res) => {
+    const userId = req.body.userId;
+    const data = req.body;
+    try{
+        await UserModel.findByIdAndUpdate(userId, data);
+        res.send("user updated successfully");
+    }catch(err){
+        res.status(400).send("error updating the user" + err.message);
     }
 })
 
