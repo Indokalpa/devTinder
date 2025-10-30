@@ -107,6 +107,16 @@ will give error as TCP connection is closed after response is sent. output : rou
 - app.use("/", (err, req, res, next) => {.....}), keep is towards the end for handling any errors if found.
 
 # Database, Schema & Model
-
 - First make the DB connection, then do app.listen()
+- model is like a class, we create instances of this model.
+
+# Javascript Object vs JSON(Javascript Object Notation)
+
+- A real object (data structure) in JavaScript                   - A string format used to store or transmit data.
+- Used inside JavaScript programs to hold data and logic.          - Used for data exchange between systems (e.g., API responses).
+- Keys can be quoted/unquoted, and values can include functions, undefined, etc.     - Keys must be in double quotes, and only basic data types are allowed.
+- Directly accessible via obj.key or obj["key"].                     - Must be parsed first using JSON.parse() to become an object.
+- Convert to JSON with JSON.stringify(obj)                           - Convert to JS object with JSON.parse(jsonString).
+- trailing comma allowed                                                  - trailing comma not allowed
+
 

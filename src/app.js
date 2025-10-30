@@ -6,15 +6,12 @@ const { UserModel } = require('./models/user');
 
 const app = express();
 
+// will work for all routes
+app.use(express.json());
+
 app.post("/signup", async (req, res) => {
-    const userObj = {
-        firstName: "Virat",
-        lastName: "Kohli",
-        emailId: "viratkohli@gmail.com",
-        password: "password123",
-    }
-    // creating a new user document
-    const user = new UserModel(userObj);
+
+    const user = new UserModel(req.body);
     try{
         await user.save();
         res.send("user Added Successfully");
