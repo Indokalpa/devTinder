@@ -126,3 +126,5 @@ will give error as TCP connection is closed after response is sent. output : rou
 
 - The "required" validator in Mongoose only runs on document creation or .save(), 
 not during update operations like findByIdAndUpdate(), updateOne(), etc. — even if you set { runValidators: true }.
+
+- additionally, use api level validation.
