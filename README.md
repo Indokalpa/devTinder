@@ -120,3 +120,9 @@ will give error as TCP connection is closed after response is sent. output : rou
 - trailing comma allowed                                                  - trailing comma not allowed
 
 
+# Data Sanitization and Schema Validation
+
+- validation is applied when you insert new data or explicitly call .save() on a document, for update operations they don't run automatically.
+
+- The "required" validator in Mongoose only runs on document creation or .save(), 
+not during update operations like findByIdAndUpdate(), updateOne(), etc. — even if you set { runValidators: true }.
