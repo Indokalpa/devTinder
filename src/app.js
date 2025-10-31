@@ -71,12 +71,12 @@ app.patch("/user/:userId", async (req, res) => {
         ALLOWED_UPDATES.includes(update)
         );
         if(!isUpdateAllowed){
-            throw new Error("invalid updates!");
+            throw new Error("invalid updates! They are immutable fields.");
         }
         if(data?.skills.legth > 10){
             throw new Error("cannot add more than 10 skills");
         }
-        
+
         await UserModel.findByIdAndUpdate(userId, data, 
             {runValidators: true}
         );

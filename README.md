@@ -120,7 +120,7 @@ will give error as TCP connection is closed after response is sent. output : rou
 - trailing comma allowed                                                  - trailing comma not allowed
 
 
-# Data Sanitization and Schema Validation
+# Data Sanitization and Schema Validation(DB lvl and API lvl)
 
 - validation is applied when you insert new data or explicitly call .save() on a document, for update operations they don't run automatically.
 

@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
-
+const validator = require('validator');
+// 
 const userSchema = new mongoose.Schema({
     firstName: {
         type: String,
@@ -16,10 +17,20 @@ const userSchema = new mongoose.Schema({
         required: true,
         trim: true,
         unique: true,
+        validate(value){
+            if(!validator.isEmail(value)){
+                throw new Error("Email is not valid");
+            }
+        }
     }, 
     password: {
         type: String,
         required: true,
+        validate(value){
+            if(!validator.isStrongPassword(value)){
+                throw new Error("Password is not strong enough");
+            }
+        }
     },
     age: {
         type: Number,
@@ -34,7 +45,12 @@ const userSchema = new mongoose.Schema({
     },
     photoUrl: {
         type: String,
-        default: "https://assets.leetcode.com/users/IndoKalpa/avatar_1712646550.png"
+        default: "https://assets.leetcode.com/users/IndoKalpa/avatar_1712646550.png",
+        validate(value) {
+            if(!validator.isURL(value)){
+                throw new Error("Photo URL is not valid.");
+            }
+        }
     },
     about: {
         type: String,
