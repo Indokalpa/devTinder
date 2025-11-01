@@ -122,9 +122,12 @@ will give error as TCP connection is closed after response is sent. output : rou
 
 # Data Sanitization and Schema Validation(DB lvl and API lvl)
 
+- Never TRUST req.body()
 - validation is applied when you insert new data or explicitly call .save() on a document, for update operations they don't run automatically.
-
 - The "required" validator in Mongoose only runs on document creation or .save(), 
 not during update operations like findByIdAndUpdate(), updateOne(), etc. — even if you set { runValidators: true }.
-
 - additionally, use api level validation.
+
+# Encrypting Password
+- use 'bcrypt' lib to encrypt our password into a hash, and then store this hash. Also use it to verify.
+- use "Invalid credential" instead of "User not found"/"Incorrect Password".

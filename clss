@@ -1,0 +1,13 @@
+[33mcd83136[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m exploring validator library
+[33m53101f8[m API level data sanitization
+[33me45f2a2[m schema validations
+[33mab182ba[m findByIdAndDelete() && findByIdAndUpdate()
+[33m7609aee[m /user & /feed api
+[33m3d679e6[m Dynamic Data in Signup API
+[33m8bc4fd3[m DB schema & model
+[33mda7e346[m Error Handling
+[33mb21eaab[m writing_auth_middleware
+[33m28ad165[m rout es & routeHandlers
+[33mc2b8357[m playing with the routes:
+[33madac4f5[m GET, POST & DEL
+[33m6357df7[m created a express server

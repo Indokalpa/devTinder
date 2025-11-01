@@ -3,25 +3,66 @@ const { adminAuth, userAuth } = require('./middlewares/auth');
 const { connectDB } = require("./config/database");
 const { connect } = require('mongoose');
 const { UserModel } = require('./models/user');
+const { validateSignUpData } = require('./utils/validation');
+const bcrypt = require('bcrypt');
+const validator = require('validator');
 
 const app = express();
 
-// will work for all routes
 app.use(express.json());
 
-// POST /signup - add a new user to the database
 app.post("/signup", async (req, res) => {
-
-    const user = new UserModel(req.body);
     try{
+        // valdiation of data
+        validateSignUpData(req);
+
+        const {firstName, lastName, emailId,password} = req.body;
+        // Encrypt password
+        const passwordHash = await bcrypt.hash(password, 10);
+        
+
+        // create a new instance of user model
+        const user = new UserModel({
+            firstName,
+            lastName,
+            emailId,
+            password: passwordHash
+        });
+
         await user.save();
         res.send("user Added Successfully");
     }catch(err){
-        res.status(400).send("error saving the message" + err.message);
+        res.status(400).send("error signing up" + err.message);
     }
 });
 
-// GET /user - get user info by email
+app.post("/login", async (req, res) => {
+    try {
+        const { emailId, password } = req.body;
+
+        const isValidEmail = validator.isEmail(emailId);
+        if(!isValidEmail){
+            throw new Error("Invalid email format");
+        }
+
+        const user = await UserModel.findOne({emailId: emailId});
+        if(!user){
+            throw new Error("Invalid login credentials");
+        }
+
+        const isPasswordValid = await bcrypt.compare(password, user.password)
+
+        if(isPasswordValid){
+            res.send("Login successful");
+        }else{
+            throw new Error("Invalid login credentials");
+        }
+
+    }catch(err) {
+        res.status(400).send("error logging in : " + err.message);
+    }
+});
+
 app.get("/user", async (req, res) => {
     const userEmail = req.body.emailId;
 
@@ -37,7 +78,6 @@ app.get("/user", async (req, res) => {
     }
 });
 
-// GET /feed - get all the users from the database
 app.get("/feed", async (req, res) => {
     try{
         const users = await UserModel.find({});
@@ -47,7 +87,6 @@ app.get("/feed", async (req, res) => {
     }
 });
 
-// DELETE /user - delete a user from the database by userId
 app.delete("/user", async (req, res) => {
     const userId = req.body.userId;
 
@@ -59,7 +98,6 @@ app.delete("/user", async (req, res) => {
     }
 });
 
-// PATCH /user - update data of a user by userId
 app.patch("/user/:userId", async (req, res) => {
     const userId = req.params.userId;
     const data = req.body;
