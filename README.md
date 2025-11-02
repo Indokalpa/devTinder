@@ -27,14 +27,14 @@ Requirements Gathering (Product Manager)
 - user collection (firstName, lastName, emailId, Ph No, password, age, gender)
 
 - Connection Requests (From UserId, To UserId, Status)
-  - statuses : pending, accepted, rejected, ignored
+  - status : pending, accepted, rejected, ignored
 
 # API Design
 - REST API (Representational State Transfer API) is a set of rules and conventions for building and interacting with web services.
 - A RESTful API is one that adheres to REST principles, using HTTP methods to perform CRUD operations on resources.
 
 - Client-Server : Client and server are independent; the client requests data, the server provides it.
-- Stateless : Each request is independent — no session stored on the server.the server does not store session info.
+- Stateless : Each request is independent — no session stored on the server.The server does not store session info.
 - Cacheable : Responses can be cached to improve performance.
 - Uniform Interface : Same method/way of communication between all clients and servers (standard URLs, HTTP methods).
 - Layered System : API can have multiple layers (security, cache, load balancer) hidden from the client.
@@ -63,7 +63,7 @@ Requirements Gathering (Product Manager)
 # Routing and Request Handlers
 
 - order of defining the routes matters, as it starts checking top-down.
-- /hello and /hello/123 will give same result, but not /hello123
+- '/hello' and '/hello/123' will give same result, but not /hello123
 - URL bar always sends a GET api call.
 - .use() will match all the HTTP methods unlike specific .get(), .post(), .put(),....
 
@@ -88,7 +88,7 @@ Requirements Gathering (Product Manager)
     res.send("route Handler 2");
 }
 ),
-will give error as TCP connection is closed after response is sent. output : route Handler 1   route Handler 2
+will give error as TCP connection is closed after response is sent.
 
  - if next() is called at last route handler, then error as no handler to call(it don't exist).
 
@@ -109,6 +109,7 @@ will give error as TCP connection is closed after response is sent. output : rou
 # Database, Schema & Model
 - First make the DB connection, then do app.listen()
 - model is like a class, we create instances of this model.
+- An instance of a model is called a document.
 
 # Javascript Object vs JSON(Javascript Object Notation)
 
@@ -131,3 +132,4 @@ not during update operations like findByIdAndUpdate(), updateOne(), etc. — eve
 # Encrypting Password
 - use 'bcrypt' lib to encrypt our password into a hash, and then store this hash. Also use it to verify.
 - use "Invalid credential" instead of "User not found"/"Incorrect Password".
+
