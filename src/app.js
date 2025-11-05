@@ -1,22 +1,25 @@
 const express = require('express');
-const { adminAuth, userAuth } = require('./middlewares/auth');
+const { userAuth } = require('./middlewares/auth');
 const { connectDB } = require("./config/database");
 const { connect } = require('mongoose');
 const { UserModel } = require('./models/user');
 const { validateSignUpData } = require('./utils/validation');
 const bcrypt = require('bcrypt');
 const validator = require('validator');
+const cookieParser = require('cookie-parser');
+const jwt = require('jsonwebtoken');
 
 const app = express();
 
 app.use(express.json());
+app.use(cookieParser())
 
 app.post("/signup", async (req, res) => {
     try{
         // valdiation of data
         validateSignUpData(req);
 
-        const {firstName, lastName, emailId,password} = req.body;
+        const {firstName, lastName, emailId, password} = req.body;
         // Encrypt password
         const passwordHash = await bcrypt.hash(password, 10);
         
@@ -50,10 +53,15 @@ app.post("/login", async (req, res) => {
             throw new Error("Invalid login credentials");
         }
 
-        const isPasswordValid = await bcrypt.compare(password, user.password)
+        const isPasswordValid = await user.validatePassword(password);
 
         if(isPasswordValid){
-            res.send("Login successful");
+            // create JWT token
+            const token = user.getJWT();
+            // Add the token to cookie and send it to the client
+            res.cookie("token", token, {expires: new Date(Date.now() + 7*24*60*60*1000), httpOnly: true});
+            res.send("login successful");
+            
         }else{
             throw new Error("Invalid login credentials");
         }
@@ -63,66 +71,21 @@ app.post("/login", async (req, res) => {
     }
 });
 
-app.get("/user", async (req, res) => {
-    const userEmail = req.body.emailId;
-
+app.get("/profile", userAuth, async (req, res) => {
     try{
-        const user = await UserModel.findOne({emailId: userEmail});
-        if(!user){
-            res.status(400).send("error fetching the user" + err.message);
-        }else{
-            res.send(user);
-        }
+    const user = req.user;
+    res.send(user);
     }catch(err){
-        res.status(400).send("error fetching the user" + err.message);
-    }
-});
-
-app.get("/feed", async (req, res) => {
-    try{
-        const users = await UserModel.find({});
-        res.send(users);
-    }catch(err){
-        res.status(400).send("error fetching the feed" + err.message);
-    }
-});
-
-app.delete("/user", async (req, res) => {
-    const userId = req.body.userId;
-
-    try{
-        const user = await UserModel.findByIdAndDelete(userId);
-        res.send("User deleted successfully");
-    }catch(err){
-        res.status(400).send("error deleting the user" + err.message);
-    }
-});
-
-app.patch("/user/:userId", async (req, res) => {
-    const userId = req.params.userId;
-    const data = req.body;
-    
-    try{
-        // api level validation
-        const ALLOWED_UPDATES = ['phtooUrl', 'about',"gender", "age", "skills"];
-        const isUpdateAllowed = Object.keys(data).every((update) => 
-        ALLOWED_UPDATES.includes(update)
-        );
-        if(!isUpdateAllowed){
-            throw new Error("invalid updates! They are immutable fields.");
-        }
-        if(data?.skills.legth > 10){
-            throw new Error("cannot add more than 10 skills");
-        }
-
-        await UserModel.findByIdAndUpdate(userId, data, 
-            {runValidators: true}
-        );
-        res.send("user updated successfully");
-    }catch(err){
-        res.status(400).send("error updating the user" + err.message);
+        res.status(400).send("error fetching profile" + err.message);
     }
 })
+
+app.post("/sendConnectionRequest", userAuth, async (req, res) => {
+    const user = req.user;
+    // sending connection request logic
+    console.log("Connection request sent");
+    res.send(user.firstName + " is sending a connection request ");
+});
 
 connectDB().then(() => {
     console.log("Database connected successfully");

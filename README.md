@@ -133,3 +133,13 @@ not during update operations like findByIdAndUpdate(), updateOne(), etc. — eve
 - use 'bcrypt' lib to encrypt our password into a hash, and then store this hash. Also use it to verify.
 - use "Invalid credential" instead of "User not found"/"Incorrect Password".
 
+# Authentication, JWT & Cookies
+- After Login validation, the server sends back a JWT token inside a cookie with exipiration date. Browser will store this cookie.
+
+- This cookie is sent along with the request by the client in every API request for validation.
+- need "cookie parser" middleware to read cookies.
+
+- cookie.expire : Client-side. How long browser stores the cookie before deleting it. 
+
+- jwt.expire : Server-side. How long token is valid for authentication at the server.
+- Don't use arrow fn with schema-methods, as 'this' keyword only works with normal fn, not arrow fn.
