@@ -143,3 +143,7 @@ not during update operations like findByIdAndUpdate(), updateOne(), etc. — eve
 
 - jwt.expire : Server-side. How long token is valid for authentication at the server.
 - Don't use arrow fn with schema-methods, as 'this' keyword only works with normal fn, not arrow fn.
+
+# Diving into APIs and Express Router
+- Group similar routes under respective rotuers
+- use router = express.Router() instead of app = express()

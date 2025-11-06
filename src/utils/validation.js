@@ -10,7 +10,7 @@ const validateSignUpData = (req) => {
         throw new Error("Email is not valid.");
     }
     else if(validator.isStrongPassword(password) === false){
-        throw new Error("Password is not strong enough.");
+        throw new Error(" Password is not strong enough. ");
     }
 }
 
