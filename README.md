@@ -147,3 +147,10 @@ not during update operations like findByIdAndUpdate(), updateOne(), etc. — eve
 # Diving into APIs and Express Router
 - Group similar routes under respective rotuers
 - use router = express.Router() instead of app = express()
+
+# Logical DB Query & Compound Indexes
+- '$or', '$ans' query && 'pre' middleware in mongoose
+- 'pre' middleware will be called everytime the specified event happens.
+
+- use indexes to optimize the queries in DB.
+- MongoDB automatically creates a index for unique: true. 
