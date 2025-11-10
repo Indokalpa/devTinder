@@ -153,4 +153,6 @@ not during update operations like findByIdAndUpdate(), updateOne(), etc. — eve
 - 'pre' middleware will be called everytime the specified event happens.
 
 - use indexes to optimize the queries in DB.
-- MongoDB automatically creates a index for unique: true. 
+- MongoDB automatically creates a index for unique: true.
+
+# Ref, Populate & Thought process of writing APIs
