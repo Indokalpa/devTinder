@@ -156,5 +156,5 @@ not during update operations like findByIdAndUpdate(), updateOne(), etc. — eve
 - MongoDB automatically creates a index for unique: true.
 
 # Ref, Populate & Thought process of writing APIs
-- use 'ref' to create reference or relation betwn collections.
-- Then use 'populate' to fetch required info from referenced collection. 
+- use 'ref' to create reference or relation betwn a field and a collection.
+- Then use 'populate' to fetch required info from referenced collection for that field. 
