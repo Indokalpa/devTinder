@@ -157,4 +157,12 @@ not during update operations like findByIdAndUpdate(), updateOne(), etc. — eve
 
 # Ref, Populate & Thought process of writing APIs
 - use 'ref' to create reference or relation betwn a field and a collection.
-- Then use 'populate' to fetch required info from referenced collection for that field. 
+- Then use 'populate' to fetch required info from referenced collection for that field.
+
+# Building Feed API and Pagination
+
+- Query opertators like $nin, $ne in mongoDB.
+
+- /feed?pages=1&limit=10 : first 10 users 1-10 => .skip(0) & .limit(10)
+- /feed?pages=2&limit=10 : first 10 users 11-20 => .skip(10) & .limit(10)
+- use .skip() && .limit()
