@@ -5,11 +5,9 @@ const userAuth = async (req, res, next) => {
     // read the token from the req cookies
     // validate the token, and find the username
     try{
-
-    const cookies = req.cookies;
-    const { token } = cookies;
+    const { token } = req.cookies;
     if(!token){
-        throw new Error("No token found");
+        return res.status(401).send("Please Login!")
     }
 
     const decodedObj = await jwt.verify(token, "secret");
