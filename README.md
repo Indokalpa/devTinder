@@ -161,7 +161,7 @@ not during update operations like findByIdAndUpdate(), updateOne(), etc. — eve
 
 # Building Feed API and Pagination
 
-- Query opertators like $nin, $ne in mongoDB.
+- Query operators like $nin, $ne in mongoDB.
 
 - /feed?pages=1&limit=10 : first 10 users 1-10 => .skip(0) & .limit(10)
 - /feed?pages=2&limit=10 : first 10 users 11-20 => .skip(10) & .limit(10)
