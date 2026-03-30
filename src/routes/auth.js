@@ -6,6 +6,14 @@ const jwt = require("jsonwebtoken");
 const validator = require("validator");
 
 const authRouter = express.Router();
+const isProduction = process.env.NODE_ENV === "production";
+
+const authCookieOptions = {
+  expires: new Date(Date.now() + 8 * 60 * 60 * 1000),
+  httpOnly: true,
+  sameSite: isProduction ? "none" : "lax",
+  secure: isProduction,
+};
 
 authRouter.post("/signup", async (req, res) => {
   try {
@@ -28,10 +36,7 @@ authRouter.post("/signup", async (req, res) => {
     // create JWT token
     const token = user.getJWT();
     // Add the token to cookie and send it to the client
-    res.cookie("token", token, {
-      expires: new Date(Date.now() + 8 * 60 * 60 *1000),
-      httpOnly: true,
-    });
+    res.cookie("token", token, authCookieOptions);
     res.json({ message: "User signed up successfully", data: savedUser });
   } catch (err) {
     res.status(400).send("error signing up" + err.message);
@@ -59,10 +64,7 @@ authRouter.post("/login", async (req, res) => {
       // create JWT token
       const token = user.getJWT();
       // Add the token to cookie and send it to the client
-      res.cookie("token", token, {
-        expires: new Date(Date.now() + 8 * 60 * 60 * 1000),
-        httpOnly: true,
-      });
+      res.cookie("token", token, authCookieOptions);
       res.send(user);
     } else {
       throw new Error("Invalid login credentials");
@@ -75,8 +77,9 @@ authRouter.post("/login", async (req, res) => {
 authRouter.post("/logout", (req, res) => {
   // clear the token cookie
   res
-    .cookie("token", null, {
-      expires: new Date(Date.now()),
+    .cookie("token", "", {
+      ...authCookieOptions,
+      expires: new Date(0),
     })
     .send("logout successful");
 });
